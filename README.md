@@ -20,4 +20,4 @@ I'm aware there are many suitable libraries for C that add useful data structure
 The library is meant to be simple, relatively safe, and mostly performant.
 
 ## License
-`libcds` is licensed under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.en.html).
+`libcds` is licensed under the [GNU General Public License v3](LICENSE).
