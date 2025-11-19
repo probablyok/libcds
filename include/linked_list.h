@@ -15,9 +15,9 @@
  * head.
  */
 typedef struct ListNode {
-  void* data;
-  struct ListNode* next;
-  struct ListNode* prev;
+    void* data;
+    struct ListNode* next;
+    struct ListNode* prev;
 } ListNode;
 
 /**
@@ -32,10 +32,10 @@ typedef struct ListNode {
  * particular list.
  */
 typedef struct {
-  ListNode* head;
-  ListNode* tail;
-  size_t elemSize;
-  size_t size;
+    ListNode* head;
+    ListNode* tail;
+    size_t elemSize;
+    size_t size;
 } LinkedList;
 
 #endif
