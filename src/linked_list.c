@@ -131,6 +131,46 @@ bool linked_list_push_first(LinkedList* list, const void* elem) {
     return false;
 }
 
+bool linked_list_push_at(LinkedList* list, const void* elem, size_t idx) {
+    if (idx > list->size) {
+        return false;
+    }
+
+    if (idx == 0) {
+        // Index is the head
+        return linked_list_push_first(list, elem);
+    } else if (idx == list->size) {
+        // Index is the tail
+        return linked_list_push_last(list, elem);
+    }
+
+    // Index is between head and tail
+
+    // Create list node
+    ListNode* node =
+        linked_list_create_node(list->elemSize, elem, list->clone_elem);
+    if (!node) {
+        return true;
+    }
+
+    // Iterate up to insertion index
+    ListNode* cur = list->head;
+    for (size_t i = 0; i < idx; i++) {
+        cur = cur->next;
+    }
+    // Previous node
+    ListNode* prev = cur->prev;
+
+    // Insert between current and previous node
+    node->prev = prev;
+    node->next = cur;
+    prev->next = node;
+    cur->prev = node;
+
+    list->size++;
+    return false;
+}
+
 void linked_list_free(LinkedList* list) {
     ListNode* cur = list->head;
     while (cur) {

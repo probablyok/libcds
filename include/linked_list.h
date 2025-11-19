@@ -74,6 +74,7 @@ void* linked_list_get_index(LinkedList* list, size_t idx);
  * @param list A reference to the linked list being added to.
  * @param elem A reference to the void pointer representing data that is being
  * copied to the list.
+ * @return `true` if there was an error adding the element, `false` otherwise.
  */
 bool linked_list_push_last(LinkedList* list, const void* elem);
 
@@ -82,8 +83,19 @@ bool linked_list_push_last(LinkedList* list, const void* elem);
  * @param list A reference to the linked list being added to.
  * @param elem A reference to the void pointer representing data that is being
  * copied to the list.
+ * @return `true` if there was an error adding the element, `false` otherwise.
  */
 bool linked_list_push_first(LinkedList* list, const void* elem);
+
+/**
+ * Adds a node after a given index with contents copied from `elem`. The
+ * index must be within bounds of the list's min and max indices.
+ * @param list A reference to the linked list being added to.
+ * @param elem A reference to the void pointer representing data that is being
+ * copied to the list.
+ * @return `true` if there was an error adding the element, `false` otherwise.
+ */
+bool linked_list_push_at(LinkedList* list, const void* elem, size_t idx);
 
 /**
  * Frees memory pertaining to a linked list. It frees: each node's `data`
