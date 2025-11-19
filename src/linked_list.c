@@ -63,6 +63,32 @@ static ListNode* linked_list_create_node(size_t elemSize, const void* elem,
     return node;
 }
 
+void* linked_list_get_index(LinkedList* list, size_t idx) {
+    // Bounds check
+    if (list->size == 0 || idx > (list->size - 1)) {
+        return NULL;
+    }
+
+    ListNode* cur = list->head;
+    for (size_t i = 0; i < idx; idx++) {
+        cur = cur->next;  // Assume nodes connect
+    }
+
+    if (list->clone_elem) {
+        return list->clone_elem(cur->data);  // Return deep cloned element
+    }
+
+    // Shallow copy case
+    void* copy = malloc(list->elemSize);
+    // Malloc fail
+    if (!copy) {
+        return NULL;
+    }
+
+    memcpy(copy, cur->data, list->elemSize);
+    return copy;
+}
+
 bool linked_list_push_last(LinkedList* list, const void* elem) {
     // Create list node
     ListNode* node =

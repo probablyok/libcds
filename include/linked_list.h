@@ -38,14 +38,15 @@ typedef struct {
     size_t elemSize;
     size_t size;
     void* (*clone_elem)(const void*);  // Deep copy callback
-    void (*free_elem)(void*)           // Deep free callback
+    void (*free_elem)(void*);          // Deep free callback
 } LinkedList;
 
 /**
  * Creates a returns an empty, heap-allocated `LinkedList` with elements set to
  * be of `elemSize` bytes. Linked lists must be freed by the programmer when
  * no longer needed. If storing elements that hold there own heap-allocated
- * pointers, also specify deep clone and free functions, otherwise specify NULL.
+ * pointers, also specify deep clone and free functions, otherwise specify
+ * `NULL`.
  * @param elemSize The number of bytes for data each node in list node holds.
  * @param clone_elem A pointer to a function that copies bytes at a void pointer
  * to a new void pointer and returns it.
@@ -56,6 +57,17 @@ typedef struct {
 LinkedList* linked_list_create(size_t elemSize,
                                void* (*clone_elem)(const void*),
                                void (*free_elem)(void*));
+
+/**
+ * Returns a void pointer to the data held at index `idx` in given linked list.
+ * This function returns a copy to the data, meaning the returned value get
+ * persist after list lifetime and must be manually freed.
+ * @param list A reference to the list being indexed.
+ * @param idx The index whose data is being retrieved.
+ * @return `NULL` if the index provided was not within min and max bounds of
+ * list, or if the list is empty.
+ */
+void* linked_list_get_index(LinkedList* list, size_t idx);
 
 /**
  * Adds a node to the end of the list with contents copied from `elem`.
