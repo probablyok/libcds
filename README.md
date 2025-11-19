@@ -20,7 +20,7 @@ I'm aware there are many suitable libraries for C that add useful data structure
 The library is meant to be simple, relatively safe, and mostly performant.
 
 ## Documentation
-Documentation is generated automatically with [Doxygen](https://www.doxygen.nl/index.html) and hosted on GitHub pages [here](https://probablyok.github.io/libcds/)
+Documentation is generated automatically with [Doxygen](https://www.doxygen.nl/index.html) and hosted on GitHub pages [here](https://probablyok.github.io/libcds/).
 
 ## License
 `libcds` is licensed under the [GNU General Public License v3](LICENSE).
