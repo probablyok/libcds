@@ -1,6 +1,7 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 /**
@@ -46,6 +47,22 @@ typedef struct {
  * @return Pointer to an empty, heap-allocated linked list.
  */
 LinkedList* linked_list_create(size_t elemSize);
+
+/**
+ * Adds a node to the end of the list with contents copied from `elem`.
+ * @param list A reference to the linked list being added to.
+ * @param elem A reference to the void pointer representing data that is being
+ * copied to the list.
+ */
+bool linked_list_push_last(LinkedList* list, const void* elem);
+
+/**
+ * Adds a node to the start of the list with contents copied from `elem`.
+ * @param list A reference to the linked list being added to.
+ * @param elem A reference to the void pointer representing data that is being
+ * copied to the list.
+ */
+bool linked_list_push_first(LinkedList* list, const void* elem);
 
 /**
  * Frees memory pertaining to a linked list. It frees: each node's `data`, the
