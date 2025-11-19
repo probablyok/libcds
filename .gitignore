@@ -1,2 +1,4 @@
 build/
 docs/
+.clang-format
+.vscode/
