@@ -38,4 +38,36 @@ typedef struct {
     size_t size;
 } LinkedList;
 
+/**
+ * Creates a returns an empty, heap-allocated `LinkedList` with elements set to
+ * be of `elemSize` bytes. Linked lists must be freed by the programmer when
+ * no longer needed.
+ * @param elemSize The number of bytes for data each node in list node holds.
+ * @return Pointer to an empty, heap-allocated linked list.
+ */
+LinkedList* linked_list_create(size_t elemSize);
+
+/**
+ * Frees memory pertaining to a linked list. It frees: each node's `data`, the
+ * node itself, and finally the list itself. Lists freed with this function
+ * should never be used afterwards.
+ * @param list The linked list container whose contents (and itself) are being
+ * freed.
+ */
+void linked_list_free(LinkedList* list);
+
+/**
+ * Frees memory pertaining to a linked list in cases where data held by each
+ * node is nested and must be freed (i.e. each node holds an array of heap
+ * allocated pointers). Works like `linked_list_free()` but also frees nested
+ * node data with `free_nested()`. Lists freed with this function should never
+ * be used afterwards.
+ * @param list The linked lis container whose contents (and itself) are being
+ * freed.
+ * @param free_nested A function pointer which takes in one void pointer
+ * (representing data held by node) and performs operations needed to free
+ * nested data.
+ */
+void linked_list_free_with(LinkedList* list, void (*free_nested)(void*));
+
 #endif
