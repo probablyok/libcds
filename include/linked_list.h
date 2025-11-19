@@ -37,16 +37,25 @@ typedef struct {
     ListNode* tail;
     size_t elemSize;
     size_t size;
+    void* (*clone_elem)(const void*);  // Deep copy callback
+    void (*free_elem)(void*)           // Deep free callback
 } LinkedList;
 
 /**
  * Creates a returns an empty, heap-allocated `LinkedList` with elements set to
  * be of `elemSize` bytes. Linked lists must be freed by the programmer when
- * no longer needed.
+ * no longer needed. If storing elements that hold there own heap-allocated
+ * pointers, also specify deep clone and free functions, otherwise specify NULL.
  * @param elemSize The number of bytes for data each node in list node holds.
+ * @param clone_elem A pointer to a function that copies bytes at a void pointer
+ * to a new void pointer and returns it.
+ * @param free_elem A pointer to a function that frees all heap-allocated
+ * pointers in an element as a void pointer.
  * @return Pointer to an empty, heap-allocated linked list.
  */
-LinkedList* linked_list_create(size_t elemSize);
+LinkedList* linked_list_create(size_t elemSize,
+                               void* (*clone_elem)(const void*),
+                               void (*free_elem)(void*));
 
 /**
  * Adds a node to the end of the list with contents copied from `elem`.
@@ -65,26 +74,14 @@ bool linked_list_push_last(LinkedList* list, const void* elem);
 bool linked_list_push_first(LinkedList* list, const void* elem);
 
 /**
- * Frees memory pertaining to a linked list. It frees: each node's `data`, the
- * node itself, and finally the list itself. Lists freed with this function
- * should never be used afterwards.
+ * Frees memory pertaining to a linked list. It frees: each node's `data`
+ * (either deeply if `free_elem` is not NULL, shallow otherwise), the node
+ * itself, and finally the list itself. Lists freed with this function should
+ * never be used afterwards. Freeing a list does not deallocate any values
+ * retrieved from the list during its lifetime.
  * @param list The linked list container whose contents (and itself) are being
  * freed.
  */
 void linked_list_free(LinkedList* list);
-
-/**
- * Frees memory pertaining to a linked list in cases where data held by each
- * node is nested and must be freed (i.e. each node holds an array of heap
- * allocated pointers). Works like `linked_list_free()` but also frees nested
- * node data with `free_nested()`. Lists freed with this function should never
- * be used afterwards.
- * @param list The linked lis container whose contents (and itself) are being
- * freed.
- * @param free_nested A function pointer which takes in one void pointer
- * (representing data held by node) and performs operations needed to free
- * nested data.
- */
-void linked_list_free_with(LinkedList* list, void (*free_nested)(void*));
 
 #endif
