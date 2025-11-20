@@ -131,6 +131,7 @@ bool linked_list_del_last(LinkedList* list) {
     // Clean up removed node
     linked_list_free_node(cur, list->free_elem);
 
+    list->size--;
     return false;
 }
 
@@ -149,6 +150,7 @@ bool linked_list_del_first(LinkedList* list) {
     // Clean up removed node
     linked_list_free_node(cur, list->free_elem);
 
+    list->size--;
     return false;
 }
 
@@ -178,6 +180,7 @@ bool linked_list_del_index(LinkedList* list, size_t idx) {
     // Clean up removed node
     linked_list_free_node(cur, list->free_elem);
 
+    list->size--;
     return false;
 }
 
