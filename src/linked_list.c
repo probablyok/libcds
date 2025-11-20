@@ -4,25 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-LinkedList* linked_list_create(size_t elemSize,
-                               void* (*clone_elem)(const void*),
-                               void (*free_elem)(void*)) {
-    LinkedList* list = malloc(sizeof(LinkedList));
-    // Malloc failed
-    if (!list) {
-        return NULL;
-    }
-
-    list->head = NULL;
-    list->tail = NULL;
-    list->elemSize = elemSize;
-    list->size = 0;
-    list->clone_elem = clone_elem;
-    list->free_elem = free_elem;
-
-    return list;
-}
-
 /**
  * Helper function for adding nodes to a given list. It initializes a list node
  * which copies `elemSize` bytes at `elem`. It performs the a shallow copy if
@@ -86,6 +67,45 @@ static ListNode* linked_list_iterate_to(LinkedList* list, size_t idx) {
     return cur;
 }
 
+/**
+ * Helper for freeing a given node eather shallowly or deeply with `free_elem`.
+ * @param node The node whose data is being freed, and itself gets freed after.
+ * @param free_elem Function pointer for handling deallocation of heap-allocated
+ * memory inside of data at node. `NULL` will perform a shallow free, instead.
+ */
+static void linked_list_free_node(ListNode* node, void (*free_elem)(void*)) {
+    if (free_elem) {
+        free_elem(node->data);  // Deep free of node data
+    } else {
+        free(node->data);  // Shallow free of node data
+    }
+
+    free(node);  // Free node itself
+}
+
+LinkedList* linked_list_create(size_t elemSize,
+                               void* (*clone_elem)(const void*),
+                               void (*free_elem)(void*)) {
+    LinkedList* list = malloc(sizeof(LinkedList));
+    // Malloc failed
+    if (!list) {
+        return NULL;
+    }
+
+    list->head = NULL;
+    list->tail = NULL;
+    list->elemSize = elemSize;
+    list->size = 0;
+    list->clone_elem = clone_elem;
+    list->free_elem = free_elem;
+
+    return list;
+}
+
+void* linked_list_get_last(LinkedList* list) { return list->tail->data; }
+
+void* linked_list_get_first(LinkedList* list) { return list->head->data; }
+
 void* linked_list_get_index(LinkedList* list, size_t idx) {
     // Bounds check
     if (list->size == 0 || idx > (list->size - 1)) {
@@ -96,9 +116,70 @@ void* linked_list_get_index(LinkedList* list, size_t idx) {
     return cur->data;
 }
 
-void* linked_list_get_first(LinkedList* list) { return list->head->data; }
+bool linked_list_del_last(LinkedList* list) {
+    // Can't delete from empty list
+    if (list->size == 0) {
+        return true;
+    }
 
-void* linked_list_get_last(LinkedList* list) { return list->tail->data; }
+    ListNode* cur = list->tail;
+
+    // Set new tail
+    list->tail = cur->prev;   // Second last element becomes new tail
+    list->tail->next = NULL;  // New tail has no next node
+
+    // Clean up removed node
+    linked_list_free_node(cur, list->free_elem);
+
+    return false;
+}
+
+bool linked_list_del_first(LinkedList* list) {
+    // Can't delete from empty list
+    if (list->size == 0) {
+        return true;
+    }
+
+    ListNode* cur = list->head;
+
+    // Set new head
+    list->head = cur->next;   // Node one after current head is set as new head
+    list->head->prev = NULL;  // New head does not point back to anything
+
+    // Clean up removed node
+    linked_list_free_node(cur, list->free_elem);
+
+    return false;
+}
+
+bool linked_list_del_index(LinkedList* list, size_t idx) {
+    // Bound check
+    if (list->size == 0 || idx > (list->size - 1)) {
+        return false;
+    }
+
+    if (idx == 0) {
+        // Index is the head
+        return linked_list_del_first(list);
+    } else if (idx == (list->size - 1)) {
+        // Index is the tail
+        return linked_list_del_last(list);
+    }
+
+    // Index is between head and tail
+    ListNode* cur = linked_list_iterate_to(list, idx);
+    ListNode* before = cur->prev;
+    ListNode* after = cur->next;
+
+    // Connect nodes adjacent to deleted node
+    before->next = after;
+    after->prev = before;
+
+    // Clean up removed node
+    linked_list_free_node(cur, list->free_elem);
+
+    return false;
+}
 
 bool linked_list_push_last(LinkedList* list, const void* elem) {
     // Create list node
@@ -142,7 +223,7 @@ bool linked_list_push_first(LinkedList* list, const void* elem) {
     return false;
 }
 
-bool linked_list_push_at(LinkedList* list, const void* elem, size_t idx) {
+bool linked_list_push_index(LinkedList* list, const void* elem, size_t idx) {
     if (idx > list->size) {
         return false;
     }
@@ -183,13 +264,7 @@ void linked_list_free(LinkedList* list) {
     while (cur) {
         ListNode* next = cur->next;
 
-        if (list->free_elem) {
-            list->free_elem(cur->data);  // Deep free of node data
-        } else {
-            free(cur->data);  // Shallow free of node data
-        }
-
-        free(cur);  // Free node itself
+        linked_list_free_node(cur, list->free_elem);
         cur = next;
     }
 

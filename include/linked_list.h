@@ -67,15 +67,14 @@ LinkedList* linked_list_create(size_t elemSize,
                                void (*free_elem)(void*));
 
 /**
- * Returns a void pointer to the data held at index `idx` in given linked list.
- * This function returns a reference to the data, meaning the returned value
- * does not persist after list lifetime and should never be freed manually.
- * @param list A reference to the list being indexed.
- * @param idx The index whose data is being retrieved.
- * @return `NULL` if the index provided was not within min and max bounds of
- * list, or if the list is empty.
+ * Returns void pointer to data held at tail of list. Returns a reference to the
+ * data, so it does not persist after list lifetime and should not be freed
+ * manually.
+ * @param list A reference to the list being queried.
+ * @return A pointer to the value currently stored currently stored in the list
+ * tail.
  */
-void* linked_list_get_index(LinkedList* list, size_t idx);
+void* linked_list_get_last(LinkedList* list);
 
 /**
  * Returns void pointer to data held at head of list. Returns a reference to the
@@ -88,14 +87,43 @@ void* linked_list_get_index(LinkedList* list, size_t idx);
 void* linked_list_get_first(LinkedList* list);
 
 /**
- * Returns void pointer to data held at tail of list. Returns a reference to the
- * data, so it does not persist after list lifetime and should not be freed
- * manually.
- * @param list A reference to the list being queried.
- * @return A pointer to the value currently stored currently stored in the list
- * tail.
+ * Returns a void pointer to the data held at index `idx` in given linked list.
+ * This function returns a reference to the data, meaning the returned value
+ * does not persist after list lifetime and should never be freed manually.
+ * @param list A reference to the list being indexed.
+ * @param idx The index whose data is being retrieved.
+ * @return `NULL` if the index provided was not within min and max bounds of
+ * list, or if the list is empty.
  */
-void* linked_list_get_last(LinkedList* list);
+void* linked_list_get_index(LinkedList* list, size_t idx);
+
+/**
+ * Removes the last node (tail) of provided linked list if the list is not empty
+ * and handles freeing memory for removed node.
+ * @param list A reference to the list whose tail is being removed.
+ * @return `true` if the list was empty and removal did not occur, `false`
+ * otherwise.
+ */
+bool linked_list_del_last(LinkedList* list);
+
+/**
+ * Removes the first node (head) of provided linked list if the list is not
+ * empty and handles freeing memory of removed node.
+ * @param list A reference to the list whose head is being removed.
+ * @return `true` if the list was empty and removal did not occur, `false`
+ * otherwise.
+ */
+bool linked_list_del_first(LinkedList* list);
+
+/**
+ * Removes the node at the provided index in the linked list if the list is
+ * not empty and the index is within min and max bounds fo list. Handles freeing
+ * memory of removed node.
+ * @param list A reference to the list which has node removed at index.
+ * @return `true` if the list was empty, or the index given was out of bounds,
+ * meaning removal did not occur. `false` otherwise.
+ */
+bool linked_list_del_index(LinkedList* list, size_t idx);
 
 /**
  * Adds a node to the end of the list with contents copied from `elem`.
@@ -123,7 +151,7 @@ bool linked_list_push_first(LinkedList* list, const void* elem);
  * copied to the list.
  * @return `true` if there was an error adding the element, `false` otherwise.
  */
-bool linked_list_push_at(LinkedList* list, const void* elem, size_t idx);
+bool linked_list_push_index(LinkedList* list, const void* elem, size_t idx);
 
 /**
  * Frees memory pertaining to a linked list. It frees: each node's `data`
