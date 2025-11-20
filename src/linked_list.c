@@ -1,5 +1,6 @@
 #include "linked_list.h"
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -63,16 +64,35 @@ static ListNode* linked_list_create_node(size_t elemSize, const void* elem,
     return node;
 }
 
+/**
+ * Given an index in a linked list, iterates to the specified index in the least
+ * number of steps. Ensure given index has been bounds checked.
+ * @param list The linked list being iterated through.
+ * @param idx The index of the node to iterate through to.
+ * @return A reference to the node at the specified index.
+ */
+static ListNode* linked_list_iterate_to(LinkedList* list, size_t idx) {
+    bool fromHead = idx < (list->size / 2);
+
+    size_t curIdx = fromHead ? 0 : list->size - 1;
+    int8_t idxAdd = fromHead ? 1 : -1;
+    ListNode* cur = fromHead ? list->head : list->tail;
+
+    while (curIdx != idx) {
+        cur = fromHead ? cur->next : cur->prev;
+        curIdx += idxAdd;
+    }
+
+    return cur;
+}
+
 void* linked_list_get_index(LinkedList* list, size_t idx) {
     // Bounds check
     if (list->size == 0 || idx > (list->size - 1)) {
         return NULL;
     }
 
-    ListNode* cur = list->head;
-    for (size_t i = 0; i < idx; idx++) {
-        cur = cur->next;  // Assume nodes connect
-    }
+    ListNode* cur = linked_list_iterate_to(list, idx);
 
     if (list->clone_elem) {
         return list->clone_elem(cur->data);  // Return deep cloned element
@@ -153,11 +173,7 @@ bool linked_list_push_at(LinkedList* list, const void* elem, size_t idx) {
         return true;
     }
 
-    // Iterate up to insertion index
-    ListNode* cur = list->head;
-    for (size_t i = 0; i < idx; i++) {
-        cur = cur->next;
-    }
+    ListNode* cur = linked_list_iterate_to(list, idx);
     // Previous node
     ListNode* prev = cur->prev;
 
