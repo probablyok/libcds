@@ -153,7 +153,7 @@ bool linked_list_push_first(LinkedList* list, const void* elem) {
 
 bool linked_list_push_at(LinkedList* list, const void* elem, size_t idx) {
     if (idx > list->size) {
-        return false;
+        return true;
     }
 
     if (idx == 0) {
