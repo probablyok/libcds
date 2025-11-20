@@ -78,6 +78,26 @@ LinkedList* linked_list_create(size_t elemSize,
 void* linked_list_get_index(LinkedList* list, size_t idx);
 
 /**
+ * Returns void pointer to data held at head of list. Returns a reference to the
+ * data, so it does not persist after list lifetime and should not be freed
+ * manually.
+ * @param list A reference to the list being queried.
+ * @return A pointer to the value currently stored currently stored in the list
+ * head.
+ */
+void* linked_list_get_first(LinkedList* list);
+
+/**
+ * Returns void pointer to data held at tail of list. Returns a reference to the
+ * data, so it does not persist after list lifetime and should not be freed
+ * manually.
+ * @param list A reference to the list being queried.
+ * @return A pointer to the value currently stored currently stored in the list
+ * tail.
+ */
+void* linked_list_get_last(LinkedList* list);
+
+/**
  * Adds a node to the end of the list with contents copied from `elem`.
  * @param list A reference to the linked list being added to.
  * @param elem A reference to the void pointer representing data that is being

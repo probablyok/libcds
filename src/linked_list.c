@@ -96,6 +96,10 @@ void* linked_list_get_index(LinkedList* list, size_t idx) {
     return cur->data;
 }
 
+void* linked_list_get_first(LinkedList* list) { return list->head->data; }
+
+void* linked_list_get_last(LinkedList* list) { return list->tail->data; }
+
 bool linked_list_push_last(LinkedList* list, const void* elem) {
     // Create list node
     ListNode* node =
