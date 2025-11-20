@@ -93,20 +93,7 @@ void* linked_list_get_index(LinkedList* list, size_t idx) {
     }
 
     ListNode* cur = linked_list_iterate_to(list, idx);
-
-    if (list->clone_elem) {
-        return list->clone_elem(cur->data);  // Return deep cloned element
-    }
-
-    // Shallow copy case
-    void* copy = malloc(list->elemSize);
-    // Malloc fail
-    if (!copy) {
-        return NULL;
-    }
-
-    memcpy(copy, cur->data, list->elemSize);
-    return copy;
+    return cur->data;
 }
 
 bool linked_list_push_last(LinkedList* list, const void* elem) {
@@ -153,7 +140,7 @@ bool linked_list_push_first(LinkedList* list, const void* elem) {
 
 bool linked_list_push_at(LinkedList* list, const void* elem, size_t idx) {
     if (idx > list->size) {
-        return true;
+        return false;
     }
 
     if (idx == 0) {

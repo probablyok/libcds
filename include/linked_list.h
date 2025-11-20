@@ -68,8 +68,8 @@ LinkedList* linked_list_create(size_t elemSize,
 
 /**
  * Returns a void pointer to the data held at index `idx` in given linked list.
- * This function returns a copy to the data, meaning the returned value get
- * persist after list lifetime and must be manually freed.
+ * This function returns a reference to the data, meaning the returned value
+ * does not persist after list lifetime and should never be freed manually.
  * @param list A reference to the list being indexed.
  * @param idx The index whose data is being retrieved.
  * @return `NULL` if the index provided was not within min and max bounds of
