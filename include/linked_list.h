@@ -98,6 +98,52 @@ void* linked_list_get_first(LinkedList* list);
 void* linked_list_get_index(LinkedList* list, size_t idx);
 
 /**
+ * Replaces the value at the head of the list with the given element. This
+ * function directly copies over memory if the element does not contain heap
+ * allocated pointers (i.e. there is no deep clone/free callbacks), so it does
+ * not leave dangling pointers. This function will leave dangling pointers if
+ * these callbacks were provided.
+ * @param list A reference to the list whose element is being set at provided
+ * index.
+ * @param elem A pointer to the new element replacing the currently stored
+ * element.
+ * @return `true` if the list was empty or deep clone failed, resulting in
+ * no new value being set. `false`, otherwise.
+ */
+bool linked_list_set_first(LinkedList* list, const void* elem);
+
+/**
+ * Replaces the value at the tail of the list with the given element. This
+ * function directly copies over memory if the element does not contain heap
+ * allocated pointers (i.e. there is no deep clone/free callbacks), so it does
+ * not leave dangling pointers. This function will leave dangling pointers if
+ * these callbacks were provided.
+ * @param list A reference to the list whose element is being set at provided
+ * index.
+ * @param elem A pointer to the new element replacing the currently stored
+ * element.
+ * @return `true` if the list was empty or deep clone failed, resulting in
+ * no new value being set. `false`, otherwise.
+ */
+bool linked_list_set_last(LinkedList* list, const void* elem);
+
+/**
+ * Replaces the value at the given index in list with the given element. This
+ * function directly copies over memory if the element does not contain heap
+ * allocated pointers (i.e. there is no deep clone/free callbacks), so it does
+ * not leave dangling pointers. This function will leave dangling pointers if
+ * these callbacks were provided.
+ * @param list A reference to the list whose element is being set at provided
+ * index.
+ * @param elem A pointer to the new element replacing the currently stored
+ * element.
+ * @param idx The index in the list whose value is being set.
+ * @return `true` if the list was empty, the index was out of bounds or deep
+ * clone failed, resulting in no new value being set. `false`, otherwise.
+ */
+bool linked_list_set_index(LinkedList* list, const void* elem, size_t idx);
+
+/**
  * Removes the last node (tail) of provided linked list if the list is not empty
  * and handles freeing memory for removed node.
  * @param list A reference to the list whose tail is being removed.

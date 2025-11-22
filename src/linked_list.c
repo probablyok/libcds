@@ -116,6 +116,40 @@ void* linked_list_get_index(LinkedList* list, size_t idx) {
     return cur->data;
 }
 
+bool linked_list_set_first(LinkedList* list, const void* elem) {
+    return linked_list_set_index(list, elem, 0);
+}
+
+bool linked_list_set_last(LinkedList* list, const void* elem) {
+    return linked_list_set_index(list, elem, list->size - 1);
+}
+
+bool linked_list_set_index(LinkedList* list, const void* elem, size_t idx) {
+    // Bounds check
+    if (list->size == 0 || idx > (list->size - 1)) {
+        return true;
+    }
+
+    ListNode* cur = linked_list_iterate_to(list, idx);
+
+    // Handle deep clone case
+    if (list->clone_elem) {
+        void* newElem = list->clone_elem(elem);
+        if (!newElem) {
+            return true;
+        }
+
+        // Free old and set new
+        list->free_elem(cur->data);
+        cur->data = newElem;
+    } else {
+        // Copy over allocated memory (saves a free and malloc)
+        memcpy(cur->data, elem, list->elemSize);
+    }
+
+    return false;
+}
+
 bool linked_list_del_last(LinkedList* list) {
     // Can't delete from empty list
     if (list->size == 0) {
