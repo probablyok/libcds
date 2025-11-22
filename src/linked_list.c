@@ -125,8 +125,13 @@ bool linked_list_del_last(LinkedList* list) {
     ListNode* cur = list->tail;
 
     // Set new tail
-    list->tail = cur->prev;   // Second last element becomes new tail
-    list->tail->next = NULL;  // New tail has no next node
+    if (list->size == 1) {
+        list->head = NULL;
+        list->tail = NULL;
+    } else {
+        list->tail = cur->prev;   // Second last element becomes new tail
+        list->tail->next = NULL;  // New tail has no next node
+    }
 
     // Clean up removed node
     linked_list_free_node(cur, list->free_elem);
@@ -144,8 +149,14 @@ bool linked_list_del_first(LinkedList* list) {
     ListNode* cur = list->head;
 
     // Set new head
-    list->head = cur->next;   // Node one after current head is set as new head
-    list->head->prev = NULL;  // New head does not point back to anything
+    if (list->size == 1) {
+        list->head = NULL;
+        list->tail = NULL;
+    } else {
+        list->head =
+            cur->next;  // Node one after current head is set as new head
+        list->head->prev = NULL;  // New head does not point back to anything
+    }
 
     // Clean up removed node
     linked_list_free_node(cur, list->free_elem);
