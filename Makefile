@@ -12,6 +12,11 @@ OBJS = $(SRCS:src/%.c=build/%.o)
 STATIC_LIB = build/libcds.a
 SHARED_LIB = build/libcds.so
 
+# Unit testing
+TEST_SRC = $(wildcard tests/*.c) $(wildcard tests/unity/*.c)
+TEST_BIN = build/run_tests
+TEST_FLAGS =  -Itests
+
 # Default target
 all: $(STATIC_LIB) $(SHARED_LIB)
 
@@ -36,4 +41,9 @@ clean:
 debug: CFLAGS += -g -O0
 debug: all
 
-.PHONY: all clean debug
+# Run unit tests
+test: $(STATIC_LIB)
+	$(CC) $(CFLAGS) $(INCLUDES) $(TEST_FLAGS) $(TEST_SRC) $(STATIC_LIB) -o $(TEST_BIN)
+	./$(TEST_BIN)
+
+.PHONY: all clean debug test
