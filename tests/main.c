@@ -5,7 +5,7 @@ void (*setupHandler)(void) = NULL;
 void (*teardownHandler)(void) = NULL;
 
 /* Module runners */
-extern void run_linked_list_tests();
+extern void run_linked_list_tests(void);
 
 void setUp(void) {
     if (setupHandler) {
