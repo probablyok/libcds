@@ -1,11 +1,11 @@
 #include "../include/linked_list.h"
 #include "unity/unity.h"
 
-/** Forward declare setup/teardown handlers */
+/* Forward declare setup/teardown handlers */
 extern void (*setupHandler)(void);
 extern void (*teardownHandler)(void);
 
-/** Global reference for tests */
+/* Global reference for tests */
 LinkedList* list;
 
 void setup_linked_list(void) {
