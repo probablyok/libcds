@@ -9,12 +9,12 @@ extern void run_linked_list_tests();
 
 void setUp(void) {
     if (setupHandler) {
-        curSetUp();
+        setupHandler();
     }
 }
 void tearDown(void) {
     if (teardownHandler) {
-        curTearDown();
+        teardownHandler();
     }
 }
 
