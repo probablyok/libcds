@@ -102,9 +102,19 @@ LinkedList* linked_list_create(size_t elemSize,
     return list;
 }
 
-void* linked_list_get_last(LinkedList* list) { return list->tail->data; }
+void* linked_list_get_last(LinkedList* list) {
+    if (list->tail) {
+        return list->tail->data;
+    }
+    return NULL;
+}
 
-void* linked_list_get_first(LinkedList* list) { return list->head->data; }
+void* linked_list_get_first(LinkedList* list) {
+    if (list->head) {
+        return list->head->data;
+    }
+    return NULL;
+}
 
 void* linked_list_get_index(LinkedList* list, size_t idx) {
     // Bounds check

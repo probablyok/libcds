@@ -83,6 +83,29 @@ void test_linked_list_push_out_of_bounds(void) {
     TEST_ASSERT_EQUAL_size_t(0, list->size);
 }
 
+/**
+ * Test verifying that `NULL` is returned when getting head and tail in an
+ * empty list, as well as some out of bounds index after a push.
+ */
+void test_linked_list_get_out_of_bounds(void) {
+    void* ret;
+
+    // Check first
+    ret = linked_list_get_first(list);
+    TEST_ASSERT_NULL(ret);
+
+    // Check last
+    ret = linked_list_get_last(list);
+    TEST_ASSERT_NULL(ret);
+
+    // Check out of bounds index
+    uint32_t add = 0;
+    linked_list_push_first(list, (void*)&add);
+
+    ret = linked_list_get_index(list, 1);
+    TEST_ASSERT_NULL(ret);
+}
+
 void run_linked_list_tests(void) {
     // Set handlers
     setupHandler = setup_linked_list;
@@ -92,6 +115,8 @@ void run_linked_list_tests(void) {
     RUN_TEST(test_linked_list_push_get_last);
     RUN_TEST(test_linked_list_push_get_first);
     RUN_TEST(test_linked_list_push_get_index);
+    RUN_TEST(test_linked_list_push_out_of_bounds);
+    RUN_TEST(test_linked_list_get_out_of_bounds);
 
     // Cleanup handlers
     setupHandler = NULL;

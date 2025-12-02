@@ -72,7 +72,7 @@ LinkedList* linked_list_create(size_t elemSize,
  * manually.
  * @param list A reference to the list being queried.
  * @return A pointer to the value currently stored currently stored in the list
- * tail.
+ * tail. Returns `NULL` if the list is empty.
  */
 void* linked_list_get_last(LinkedList* list);
 
@@ -82,7 +82,7 @@ void* linked_list_get_last(LinkedList* list);
  * manually.
  * @param list A reference to the list being queried.
  * @return A pointer to the value currently stored currently stored in the list
- * head.
+ * head. Returns `NULL` if the list is empty.
  */
 void* linked_list_get_first(LinkedList* list);
 
