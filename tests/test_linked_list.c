@@ -106,6 +106,35 @@ void test_linked_list_get_out_of_bounds(void) {
     TEST_ASSERT_NULL(ret);
 }
 
+/**
+ * Tests pushing element to start of the list a certain number of times. Also
+ * then updates/sets the value after each push.
+ */
+void test_linked_list_push_set_first(void) {
+    bool pushError;
+    bool setError;
+
+    uint32_t max = 1024;
+    uint32_t add = 0;
+    uint32_t set = 1;
+
+    for (uint32_t i = 0; i < max; i++) {
+        pushError = linked_list_push_first(list, (void*)&add);
+
+        // Push checks
+        TEST_ASSERT_FALSE(pushError);
+        TEST_ASSERT_EQUAL_size_t((size_t)(i + 1), list->size);
+        TEST_ASSERT_EQUAL_UINT32(add, *(uint32_t*)linked_list_get_first(list));
+
+        setError = linked_list_set_first(list, (void*)&set);
+
+        // Set checks
+        TEST_ASSERT_FALSE(setError);
+        TEST_ASSERT_EQUAL_size_t((size_t)(i + 1), list->size);
+        TEST_ASSERT_EQUAL_UINT32(set, *(uint32_t*)linked_list_get_first(list));
+    }
+}
+
 void run_linked_list_tests(void) {
     // Set handlers
     setupHandler = setup_linked_list;
@@ -117,6 +146,7 @@ void run_linked_list_tests(void) {
     RUN_TEST(test_linked_list_push_get_index);
     RUN_TEST(test_linked_list_push_out_of_bounds);
     RUN_TEST(test_linked_list_get_out_of_bounds);
+    RUN_TEST(test_linked_list_push_set_first);
 
     // Cleanup handlers
     setupHandler = NULL;
