@@ -71,6 +71,18 @@ void test_linked_list_push_get_index(void) {
     }
 }
 
+/**
+ * Test pushing an element to an out of bounds index in an empty list. Ensure
+ * the list remains empty and the push function indicates an error.
+ */
+void test_linked_list_push_out_of_bounds(void) {
+    uint32_t add = 0;
+    bool pushError = linked_list_push_index(list, (void*)&add, 1);
+
+    TEST_ASSERT_TRUE(pushError);
+    TEST_ASSERT_EQUAL_size_t(0, list->size);
+}
+
 void run_linked_list_tests(void) {
     // Set handlers
     setupHandler = setup_linked_list;
