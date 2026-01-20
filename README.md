@@ -7,12 +7,14 @@ All data structures aim to be implemented with a "store-by-value" method using `
 
 Data structures being implemented are:
 - **Dynamic array** - _TODO_
-- **Linked list** - _TODO_
+- **Linked list**
 - **Heap** - _TODO_
 - **Unordered Map** - _TODO_
 - **Ordered Map** - _TODO_
 
 This is not a definitive list and is subject to be changed/added to.
+
+At some point in time, unit tests will be written for data structures. There are already some written for the linked list sturcture but I would prefer to work on implementation rather then testing for the time being.
 
 ## Purpose
 I'm aware there are many suitable libraries for C that add useful data structures. This is mainly a personal project that attempts to adapt sturctures I've made before in Java for university assignments to C. I was interested about seeing how you could implement data structures in C that hold abitrary types without higher-level features like generics.
