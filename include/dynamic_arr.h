@@ -1,6 +1,8 @@
 #ifndef DYNAMIC_ARR_H
 #define DYNAMIC_ARR_H
 
+#define DYNAMIC_ARR_INIT_CAPACITY 4
+
 #include <stddef.h>
 
 /**
@@ -15,7 +17,7 @@
  * @param head The index of the first logical element in the data array.
  * @param tail The index of the last logical element in the data array.
  * @param elemSize The size of elements stored per index in data array.
- * @param arr A reference to a dynamically allocated data array.
+ * @param data A reference to a dynamically allocated data array.
  * @param clone_elem A callback function that should be provided if you intend
  * to store elements that contain heap-allocated data. This function should,
  * when passed the data of a given node, copy all memory and return a pointer
@@ -32,7 +34,7 @@ typedef struct {
     size_t head;
     size_t tail;
     size_t elemSize;
-    void** arr;
+    void** data;
     void* (*clone_elem)(const void*);  // Deep copy callback
     void* (*free_elem)(void*);         // Deep free callback
 } DynamicArr;
