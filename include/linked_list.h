@@ -32,12 +32,12 @@ typedef struct ListNode {
  * @param size The total number of nodes currently being stored in this
  * @param clone_elem A callback function that should be provided if you intend
  * to store elements that contain heap-allocated data. This function should,
- * when passed the data of a given node, copy all memory a return a pointer
+ * when passed the data of a given node, copy all memory and return a pointer
  * to a heap-allocated copy of the data that can persist without referencing the
  * list. Set to `NULL` if a deep clone is not needed.
  * @param free_elem A callback function that should be provided if you intend
  * to free elements that contain heap-allocated data. This function should,
- * when passed that data of a given node, free all memory contained within it,
+ * when passed the data of a given node, free all memory contained within it,
  * and the node's `data` as well. Set to `NULL` if a deep free is not needed.
  */
 typedef struct {
