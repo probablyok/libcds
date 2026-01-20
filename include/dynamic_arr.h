@@ -14,6 +14,7 @@
  * @param capacity The total number of indices (used/unused) in the data array.
  * @param head The index of the first logical element in the data array.
  * @param tail The index of the last logical element in the data array.
+ * @param elemSize The size of elements stored per index in data array.
  * @param arr A reference to a dynamically allocated data array.
  * @param clone_elem A callback function that should be provided if you intend
  * to store elements that contain heap-allocated data. This function should,
@@ -30,9 +31,10 @@ typedef struct {
     size_t capacity;
     size_t head;
     size_t tail;
+    size_t elemSize;
     void** arr;
-    void* (*clone_elem)(const void*); // Deep copy callback
-    void* (*free_elem)(void*);        // Deep free callback
+    void* (*clone_elem)(const void*);  // Deep copy callback
+    void* (*free_elem)(void*);         // Deep free callback
 } DynamicArr;
 
 #endif
